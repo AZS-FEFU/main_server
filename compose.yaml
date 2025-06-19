@@ -1,0 +1,30 @@
+name: azs-fefu
+
+services:
+  main_server:
+    container_name: main_server
+    restart: always
+    build: .
+    env_file: .env
+    ports:
+      - 8000:8000
+      
+
+  main_atabase:
+    container_name: main_atabase
+    restart: always
+    image: postgres:latest
+    env_file: .env
+    volumes:
+      # - ./dumps/testing.sql:/docker-entrypoint-initdb.d/testing.sql
+      - postgres-data:/var/lib/postgresql/data
+    ports:
+      - 5432:5432
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+
+volumes:
+  postgres-data:
+    name: postgres-data
